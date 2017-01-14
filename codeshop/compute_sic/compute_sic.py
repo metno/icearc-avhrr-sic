@@ -89,7 +89,7 @@ def clean_up_cloudmask(cloudmask, lats):
     return np.ma.array(updated_cloudmask_data,  mask= cloudmask.mask)
 
 
-def compute_sic( data1, data2, tb11, cloudmask, coeffs, coeff_indices, lons, lats, soz ):
+def compute_sic( data1, data2, tb11, cloudmask, coeffs, lons, lats, soz, sez, cloudprob ):
     """compute sea ice concentration
 
     use probability information to select tie points
@@ -104,17 +104,10 @@ def compute_sic( data1, data2, tb11, cloudmask, coeffs, coeff_indices, lons, lat
     """
 
     sic_with_water = np.ma.array(np.zeros(cloudmask.shape), mask=cloudmask.mask)
-    # pick the pixels where the probability of ice is higher than other surface types
 
-    # don't use pixels that are: clouds contaminated (2)
-    #                            clouds filled (3)
-    #                            not processed (0)
-    #                            undefined (5)
-    #                            sun elevation angles above 90 degrees
 
 
     angles, means, stds, weights = cleanup_coefficients(coeffs)
-
 
     from scipy.interpolate import UnivariateSpline, interp1d
     spline_means = UnivariateSpline(angles, means, w=weights)
@@ -122,15 +115,23 @@ def compute_sic( data1, data2, tb11, cloudmask, coeffs, coeff_indices, lons, lat
     ice_mean = np.ma.array(spline_means(soz.ravel()).reshape(soz.shape), mask = soz.mask)
     ice_std = np.ma.array(spline_stds(soz.ravel()).reshape(soz.shape), mask = soz.mask)
 
+    # pick the pixels where the probability of ice is higher than other surface types
+    # don't use pixels that are: clouds contaminated (2)
+    #                            clouds filled (3)
+    #                            not processed (0)
+    #                            undefined (5)
+    #                            sun elevation angles above 90 degrees
     water_threshold = 9 # reflectance of water is roughly 3 percent
     water_mask = (cloudmask == 2) * (data1 < (water_threshold + 1))
 
-    #sic = 100.*(data1 - water_threshold) /(ice_mean - 0.5*ice_std - water_threshold)
-    sic_func =np.poly1d(np.polyfit(np.array([6, np.median(means-0.5*stds), means.max()]), np.array([0,95, 100]), 2))
-    sic = sic_func(data1)
-	
+    sic = 100.*(data1 - water_threshold) /(ice_mean - 0.5*ice_std - water_threshold)
     sic = np.where((water_mask == True), 0, sic)
-    mask = ((cloudmask != 4) * (cloudmask != 2)) + (soz > 80) +  (soz<50)
+
+    mask = ((cloudmask != 4) * (cloudmask != 2)) + \
+            (soz > 80) + \
+            (soz < 50) + \
+            (sez > 55) + \
+            (cloudprob > 5)
 
     sic = np.ma.array(sic, mask = (mask + (data1>90)) )
     re0609 = np.ma.array(data1/data2, mask = sic.mask + (sic <15 ))
@@ -209,7 +210,6 @@ def apply_mask(mask_array, data_array):
     """
     # masked_data_array = np.ma.array(data_array.data, mask = data_array.mask + mask_array)
 
-    # masked_data_array = np.where(mask_array == True, 200, data_array)
     masked_data_array = np.where(mask_array == True, 200, data_array.data)
     original_mask = data_array.mask
 
@@ -239,16 +239,8 @@ def main():
     args = p.parse_args()
     areas_filepath = args.areas_file[0]
 
-
-    # Read in test coefficients file for daytime
-    # coeffs_filename = 'coeffPDF_daytime_mean-std-line_v2p1.txt'
-    # coeffs_filename = args.coeffs[0] # "./coeffPDF_daytime_mean-std-line_v2p2-misha.txt"
-    # coeffs = read_coeffs_from_file(coeffs_filename)
     sensor_name = args.sensor[0]
-
     mean_coeffs = np.load(args.mean_coeffs[0])
-    # reduce coefficients to just the ones needed for this sensor
-    # coeffs = coeffs[np.logical_and(coeffs['sensor']==sensor_name, coeffs['datatype']=='gac')]
 
     # Read in test AVHRR swath file, with lat/lon info (for trimming)
     avhrr_filepath = args.input_file[0]
@@ -256,42 +248,30 @@ def main():
     avhrr_basename = os.path.basename(avhrr_filepath)
     avhrr = netCDF4.Dataset(avhrr_filepath, locations=True)
 
-    # pigobs, pcgobs, pwgobs = calc_wic_prob_day_twi(coeffs, avhrr)
-
     vis06 = avhrr.variables['vis06'][0,:,:]
     vis09 = avhrr.variables['vis09'][0,:,:]
     tb11  = avhrr.variables['tb11'][0,:,:]
     lons = avhrr.variables['lon'][0,:,:]
     lats = avhrr.variables['lat'][0,:,:]
     cloudmask = avhrr.variables['cloudmask'][0,:,:]
-
+    cloudprob = avhrr.variables['cloudprob'][0,:,:]
 
     soz = avhrr.variables['sunsatangles'][0,:,:]
-    SOZ_LOWLIM = 0
-    SOZ_HIGHLIM =89
-    SOZ = soz.astype(np.int16)
-    coeff_indices = np.where((SOZ >= SOZ_LOWLIM) * (SOZ <= SOZ_HIGHLIM), SOZ, 0)
+    sez = avhrr.variables['sensorangles'][0,:,:]
 
     cloudmask = clean_up_cloudmask(cloudmask, lats)
-    sic, re0609 = compute_sic(vis06, vis09, tb11, cloudmask, mean_coeffs, coeff_indices, lons, lats, soz)
+    sic, re0609 = compute_sic(vis06, vis09, tb11, cloudmask, mean_coeffs, lons, lats, soz, sez, cloudprob)
 
     sic_filename = compose_filename(avhrr, sensor_name)
     output_path = os.path.join(args.output_dir[0], sic_filename)
-
-    extent_mask_file = args.extent_mask_file[0]
-    extent_mask = load_extent_mask(extent_mask_file)
-    # XXX: don't apply extent mask here, do it separately when you need it!
-    # sic = np.ma.array(sic, mask = (sic.mask == True) + (extent_mask == False))
 
     # Load OSI SAF landmask and apply to resampled SIC array
     land_mask_filepath = os.path.join(os.path.dirname(
                                       os.path.abspath(__file__)),
 		                              'resources',
-                                      'land_mask_10k.npz')
+                                      'land_mask_4k.npz')
 
     land_mask = get_osisaf_land_mask(land_mask_filepath)
-    sic = np.ma.array(sic, mask= extent_mask == False)
-    sic = apply_mask(land_mask, sic)
 
     save_sic(output_path,
                  sic,
