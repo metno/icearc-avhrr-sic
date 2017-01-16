@@ -6,11 +6,10 @@
 Welcome to icearc-avhrr-sic's documentation!
 ============================================
 
-
-This is documentation for the implementation of the ICE-ARC task D 1.6.1 project: "Estimating melt pond related uncertainty in passive microwave sea ice concentration estimates during the summer melt season".
+This is documentation for the implementation of the ICE-ARC task D1.6.1 project: "Estimating melt pond related uncertainty in passive microwave sea ice concentration estimates during the summer melt season".
 
 The documentation here covers the software implementation and structure of the project.
-For the explanation of the scientific results please refer to the project report_.
+For the explanation of the scientific results and processing flow please refer to the project report_.
 
 .. _report: https://drive.google.com/file/d/0B0zbBuUfnEIISHBSQmpPTmtKTG8/view?usp=sharing
 
