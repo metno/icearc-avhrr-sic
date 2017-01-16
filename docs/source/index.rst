@@ -19,6 +19,7 @@ For the explanation of the scientific results please refer to the project report
    :caption: Contents:
 
    setup
+   structure
    run
    output
 
