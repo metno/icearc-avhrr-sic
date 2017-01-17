@@ -45,4 +45,4 @@ For submitting the jobs to Sun Grid Engine (SGE), do:
 
    qsub ./sge/run-sge.sh ./scripts/resample_gac.sh
 
-Notice that the wrapper script :code:`resample_gac.sh` is passed as an argument to :code:`run-sge.sh`. The latter contains information necessary for the SGE to submit and spawn jobs. It will parse the contents of the files that contain satellites names, e.g. code:`./sge/single_sat_list.2008.txt` and provide parameters required by SGE to launch the job.
+Notice that the wrapper script :code:`resample_gac.sh` is passed as an argument to :code:`run-sge.sh`. The latter contains information necessary for the SGE to submit and spawn jobs. It will parse the contents of the files that contain satellites names, e.g. :code:`./sge/single_sat_list.2008.txt` and provide parameters required by SGE to launch the job.
