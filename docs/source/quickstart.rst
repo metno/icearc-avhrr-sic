@@ -42,6 +42,8 @@ Make sure you check two parameters in the :code:`run-sge.sh` file:
 
 :code:`PREFIX` variable tells what ID to prepend to output directories, so different versions of the product can be created. Edit the :code:`-t` flag value to select which dates to process. It can be either a range or a list of months.
 
+The jobs array is implemented in such way that processing is split by months, each computing node is processing a single month of data at a time.
+
 Submit resampling job to SGE
 ----------------------------
 
@@ -67,4 +69,3 @@ Once the coefficients are available, it's possible to compute sea ice concentrat
 
     qsub ./sge/run-sge.sh ./scripts/compute-cdo.sh
 
-The
