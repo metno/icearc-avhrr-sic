@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>How to run &#8212; icearc-avhrr-sic 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Output files description" href="output.html" />
+    <link rel="prev" title="Project structure" href="structure.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="output.html" title="Output files description"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="structure.html" title="Project structure"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">icearc-avhrr-sic 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="how-to-run">
+<h1>How to run<a class="headerlink" href="#how-to-run" title="Permalink to this headline">¶</a></h1>
+<p>Before executing any commands, make sure to source the environment configuration file which includes the workspace description (mainly path ot various directories).</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">source</span> ./env/lustre-env.sh
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>To make the processing system flexible and adaptable to differnt workspaces we have three levels of processing types:</dt>
+<dd><ul class="first last simple">
+<li>Process single files (single swath/satellite)</li>
+<li>Process monthly files (single month/single or multiple satellites)</li>
+<li>Batch processing on Sun Grid Engine (multiple months or years and multiple satellites)</li>
+</ul>
+</dd>
+</dl>
+<p>The first two methods are meant to be run interactively while the last on is optimized of the MET PPI infrastructure and relies on the Sun Grid Engine</p>
+<div class="section" id="process-single-swath">
+<h2>Process single swath<a class="headerlink" href="#process-single-swath" title="Permalink to this headline">¶</a></h2>
+<p>To process a single NOAA18 swath, do:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>python ./codeshop/compute_sic/resample_gac.py --input-file &lt;swath_filepath&gt;
+                                                         --output-dir<span class="o">=</span>&lt;output_directory&gt;
+                                                         --sensor<span class="o">=</span>avhrr_noaa18
+                                                         -a &lt;path-to-dir-with-areas&gt;/areas.cfg
+</pre></div>
+</div>
+<p>The same is for the other scripts <code class="code docutils literal"><span class="pre">calc_coeff.py</span></code>, <code class="code docutils literal"><span class="pre">compute_sic.py</span></code>. For the list of arguments or optional parameters use <code class="code docutils literal"><span class="pre">-h</span></code> option.
+However for convenience purposes it&#8217;s better to use shell wrapper scripts, like <code class="code docutils literal"><span class="pre">./resample_gac.sh</span></code> which is a wrapper for the <code class="code docutils literal"><span class="pre">resample_gac.py</span></code>, the invocation command being:</p>
+</div>
+<div class="section" id="process-one-month-of-data">
+<h2>Process one month of data<a class="headerlink" href="#process-one-month-of-data" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>./scripts/resample_gac.sh noaa18 200808
+</pre></div>
+</div>
+<p>Where <cite>200808</cite> is the the month to be process indicated in <cite>%Y%m</cite> format.
+For submitting the jobs to Sun Grid Engine (SGE), do:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>qsub ./sge/run-sge.sh ./scripts/resample_gac.sh
+</pre></div>
+</div>
+<p>Notice that the wrapper script <code class="code docutils literal"><span class="pre">resample_gac.sh</span></code> is passed as an argument to <code class="code docutils literal"><span class="pre">run-sge.sh</span></code>. The latter contains information necessary for the SGE to submit and spawn jobs. It will parse the contents of the files that contain satellites names, e.g. <code class="code docutils literal"><span class="pre">./sge/single_sat_list.2008.txt</span></code> and provide parameters required by SGE to launch the job.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">How to run</a><ul>
+<li><a class="reference internal" href="#process-single-swath">Process single swath</a></li>
+<li><a class="reference internal" href="#process-one-month-of-data">Process one month of data</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="structure.html"
+                        title="previous chapter">Project structure</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="output.html"
+                        title="next chapter">Output files description</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/run.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="output.html" title="Output files description"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="structure.html" title="Project structure"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">icearc-avhrr-sic 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mikhail Itkin.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>

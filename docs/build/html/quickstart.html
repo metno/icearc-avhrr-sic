@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Quickstart &#8212; icearc-avhrr-sic 1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Setup" href="setup.html" />
+    <link rel="prev" title="Welcome to icearc-avhrr-sic’s documentation!" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="setup.html" title="Setup"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to icearc-avhrr-sic’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">icearc-avhrr-sic 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="quickstart">
+<h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<p>Assuming the work is being done on the Post Processing Infrastructure (PPI), these are the steps necessary to do the processing:</p>
+<p>Get repository:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>git clone https://github.com/metno/icearc-avhrr-sic
+</pre></div>
+</div>
+<p>Install dependencies assuming you have rights to write into the python package folder (e.g. you use virtualenv [and you should]):</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">cd</span> icearc-avhrr-sic
+pip install -r requirements.txt
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">NB: On PPI systems you need to load some software modules that may not be available by default, e.g.: fyba, hdf, netcdf</p>
+</div>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">fyba</span> <span class="n">hdf</span> <span class="n">netcdf</span>
+</pre></div>
+</div>
+<p>Source environment variable:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">./</span><span class="n">env</span><span class="o">/</span><span class="n">lustre</span><span class="o">.</span><span class="n">env</span>
+</pre></div>
+</div>
+<p>First the analysis is based on the resampled data. That allows to save a massive amount of processing time at later stages.
+Also, the reflectance data is corrected here for the sun elevation.</p>
+<p>Make sure you check two parameters in the <code class="code docutils literal"><span class="pre">run-sge.sh</span></code> file:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">PREFIX</span><span class="o">=</span><span class="s1">&#39;10k&#39;</span>
+<span class="c1">#$ -t 200505-200509</span>
+</pre></div>
+</div>
+<p><code class="code docutils literal"><span class="pre">PREFIX</span></code> variable tells what ID to prepend to output directories, so different versions of the product can be created. Edit the <code class="code docutils literal"><span class="pre">-t</span></code> flag value to select which dates to process. It can be either a range or a list of months.</p>
+<p>The jobs array is implemented in such way that processing is split by months, each computing node is processing a single month of data at a time.</p>
+<div class="section" id="submit-resampling-job-to-sge">
+<h2>Submit resampling job to SGE<a class="headerlink" href="#submit-resampling-job-to-sge" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">qsub</span> <span class="o">../</span><span class="n">sge</span><span class="o">/</span><span class="n">run</span><span class="o">-</span><span class="n">sge</span><span class="o">.</span><span class="n">sh</span> <span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">resample</span><span class="o">-</span><span class="n">gac</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+<p>The analysis is based on the knowledge of AVHRR Channel 1 reflectance distribution, therefore we need to collect statistics first.</p>
+</div>
+<div class="section" id="submit-coefficients-computation-job-to-sge">
+<h2>Submit coefficients computation job to SGE<a class="headerlink" href="#submit-coefficients-computation-job-to-sge" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">qsub</span> <span class="o">./</span><span class="n">sge</span><span class="o">/</span><span class="n">run</span><span class="o">-</span><span class="n">sge</span><span class="o">.</span><span class="n">sh</span> <span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">resample</span><span class="o">-</span><span class="n">gac</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="monthly-aggregation">
+<h2>Monthly aggregation<a class="headerlink" href="#monthly-aggregation" title="Permalink to this headline">¶</a></h2>
+<p>Once the coefficients are available, it&#8217;s possible to compute sea ice concentration in the same manner:</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">qsub</span> <span class="o">./</span><span class="n">sge</span><span class="o">/</span><span class="n">run</span><span class="o">-</span><span class="n">sge</span><span class="o">.</span><span class="n">sh</span> <span class="o">./</span><span class="n">scripts</span><span class="o">/</span><span class="n">compute</span><span class="o">-</span><span class="n">cdo</span><span class="o">.</span><span class="n">sh</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Quickstart</a><ul>
+<li><a class="reference internal" href="#submit-resampling-job-to-sge">Submit resampling job to SGE</a></li>
+<li><a class="reference internal" href="#submit-coefficients-computation-job-to-sge">Submit coefficients computation job to SGE</a></li>
+<li><a class="reference internal" href="#monthly-aggregation">Monthly aggregation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to icearc-avhrr-sic&#8217;s documentation!</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="setup.html"
+                        title="next chapter">Setup</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/quickstart.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="setup.html" title="Setup"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to icearc-avhrr-sic’s documentation!"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">icearc-avhrr-sic 1 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, Mikhail Itkin.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>
