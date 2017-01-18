@@ -35,7 +35,6 @@ Project structure
    │   ├── run-sge.sh #------------------- Script for submitting SGE jobs
    │   ├── single_sat_list.1982.txt #----- what satellite to use for that year
    │   └── total-list.1982-2008.txt #----- complete list of satellites/years
-   ├── sumfeatclassat
    └── Vagrantfile
 
 .
