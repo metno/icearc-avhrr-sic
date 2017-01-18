@@ -1,17 +1,14 @@
-ICE-ARC project where AVHRR GAC records are used to derive
-sea ice concentration (SIC) in the Arctic Region.
+Sea Ice Concentration retrieval from AVHRR Global Area Coverage measurements.
 
-The AVHRR based SIC retrievals are used to validate the SIC values derived from the passive microwave satellite observations
+This is implementation of the subtask D1.6.1 of the [ICE-ARC](www.ice-arc.eu) project: "Estimating uncertainty of the sea ice concentration retrieval in the Arctic during the summer melt season
 
-This project is modular, where different methodologies can be used to derive sea ice concentration values.
+The aim of the project is to compare and analyse sea ice concentration values derived from the Passive Microwave imagers with sea ice concentration retrievals based on optical measurements.
 
-"features" folder contains actual recipes for processing the data
-and for selecting the methodologies
+Links to documentation:
 
-"tests" is just regression unit tests
+ * [Package requirements](docs/source/setup.rst)
+ * [Quick start guide for deploying and executing project on PPI infrastructure at MET Norway](docs/source/quickstart.rst)
+ * [Project structure](docs/source/structure.rst)
+ * [Output files overview](docs/source/output.rst)
+ * [How to process single files, months and years of data](docs/source/run.rst)
 
-To run behaviour test suit do:
-    ansible-playbook -i ansible/hosts ansible/playbook.yml --limit='local' --tags='tests' --extra-vars='base_dir=/path/to/project'
-Where 'local' is an alias of your local machine, defined in the 'ansible/hosts' file
-
-Read documentation [here](docs/source/quickstart.rst)
