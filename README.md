@@ -9,6 +9,5 @@ Links to documentation:
  * [Package requirements](docs/source/setup.rst)
  * [Quick start guide for deploying and executing project on PPI infrastructure at MET Norway](docs/source/quickstart.rst)
  * [Project structure](docs/source/structure.rst)
- * [Output files overview](docs/source/output.rst)
+ * [Input and output files overview](docs/source/data.rst)
  * [How to process single files, months and years of data](docs/source/run.rst)
-

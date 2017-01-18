@@ -24,7 +24,7 @@ The software repository can be obtained on github: link_.
    setup
    structure
    run
-   output
+   data
 
 Indices and tables
 ==================

@@ -2,6 +2,9 @@
 Project structure
 =================
 
+Software repository
+-------------------
+
 .. code-block:: bash
 
    .
@@ -14,7 +17,7 @@ Project structure
    │       ├── compute_sic.py #----------- Process resampled AVHRR files and compute SIC
    │       ├── README.md
    │       ├── resample_gac.py #---------- Resample swath data to NSIDC grid
-   │       └── resources 
+   │       └── resources
    │           └── land_mask.npz #-------- Landmask extracted from OSI SAF data
    ├── docs #----------------------------- Documentation
    ├── env
@@ -37,5 +40,3 @@ Project structure
    │   └── total-list.1982-2008.txt #----- complete list of satellites/years
    ├── sumfeatclassat
    └── Vagrantfile
-
-.

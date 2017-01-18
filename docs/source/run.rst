@@ -19,7 +19,7 @@ The first two methods are meant to be run interactively while the last on is opt
 Process single swath
 --------------------
 
-To process a single NOAA18 swath, do: 
+To process a single NOAA18 swath, do:
 
 .. code-block:: bash
 
