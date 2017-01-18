@@ -62,15 +62,14 @@ The projections used in this project are placed in the area definition file whic
    /lustre/storeB/users/mikhaili/icearc-avhrr-sic/codeshop/compute_sic/areas.cfg
 
 .. code::
-
-   REGION: nsidc_stere_south_10k {
-       NAME: NSIDC Polar Stereographic South
-       PCS_ID: nsidc_stere_south_10k
-       PCS_DEF: proj=stere, lat_0=-90, lat_ts=-70, lon_0=0, k=1, x_0=0, y_0=0, a=6378273, b=6356889.449, units=m
-       XSIZE: 790
-       YSIZE: 830
-       AREA_EXTENT: (-3950000.000,-3950000.000, 3950000.000, 4350000.000)
-   };
+   
+   REGION: nsidc_stere_north_10k {
+       NAME: NSIDC Polar Stereographic North
+       PCS_ID: nsidc_stere_north_10k
+       PCS_DEF: proj=stere, lat_0=90, lat_ts=70, lon_0=-45, k=1, x_0=0, y_0=0, a=6378273, b=6356889.449, units=m
+       XSIZE: 760
+       YSIZE: 1120
+       AREA_EXTENT: (-3850000.0, -5350000.0, 3750000.0, 5850000.0)
 
    REGION: nsidc_stere_north_4k {
        NAME: NSIDC Polar Stereographic North
