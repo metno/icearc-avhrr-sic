@@ -1,9 +1,0 @@
-[submodule "probabilistic-classifier"]
-	path = probabilistic-classifier
-	url = git@gitlab.met.no:istjenesten/probabilistic-classifier.git
-[submodule "sumfeatclassat"]
-	path = sumfeatclassat
-	url = git@gitlab.met.no:istjenesten/sumfeatclassat.git
-[submodule "compute_sic"]
-	path = compute_sic
-	url = git@gitlab.met.no:istjenesten/icearc-compute-sic.git
