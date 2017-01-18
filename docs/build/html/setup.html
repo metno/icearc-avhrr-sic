@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Setup &#8212; icearc-avhrr-sic 1 documentation</title>
+    <title>Setup &mdash; icearc-avhrr-sic 1 documentation</title>
     
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -17,16 +17,14 @@
         VERSION:     '1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
+        HAS_SOURCE:  true
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="top" title="icearc-avhrr-sic 1 documentation" href="index.html" />
     <link rel="next" title="Project structure" href="structure.html" />
     <link rel="prev" title="Quickstart" href="quickstart.html" /> 
   </head>
@@ -43,7 +41,7 @@
         <li class="right" >
           <a href="quickstart.html" title="Quickstart"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">icearc-avhrr-sic 1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">icearc-avhrr-sic 1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -56,12 +54,25 @@
 <h1>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="dependencies">
 <h2>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>NB: you can skip the system packages installation if you work on PPI</p>
 <p>System packages (install with apt-get):</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>python-tk
+<div class="highlight-bash"><div class="highlight"><pre>python-tk
+</pre></div>
+</div>
+<p>Before installing python packages it is recommended to create a Python virtual environment:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="c"># install Virtual Environment system wide, no need on PPI</span>
+sudo apt-get install python-virtualenvironment
+
+<span class="c"># Create virtual environment called venv</span>
+virtualenv venv    <span class="nb">source </span>venv/bin/activate <span class="c"># activate virtualenvironment</span>
+
+<span class="c"># Upgrade pip, newest versions are able to bypass compiling packages locally</span>
+<span class="c"># They install so called &#39;wheel&#39; prebuilt packages</span>
+pip install pip --upgrade
 </pre></div>
 </div>
 <p>Python packages:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>numpy
+<div class="highlight-bash"><div class="highlight"><pre>numpy
 h5py
 matplotlib
 pyresample
@@ -70,7 +81,7 @@ scipy
 </pre></div>
 </div>
 <p>Easiest way to install the dependencies is to:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>pip install -r ./codeshop/compute_sic/requirements.txt
+<div class="highlight-bash"><div class="highlight"><pre>pip install -r ./codeshop/compute_sic/requirements.txt
 </pre></div>
 </div>
 </div>
@@ -99,18 +110,21 @@ scipy
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/setup.rst.txt"
+      <li><a href="_sources/setup.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -129,12 +143,12 @@ scipy
         <li class="right" >
           <a href="quickstart.html" title="Quickstart"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">icearc-avhrr-sic 1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">icearc-avhrr-sic 1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, Mikhail Itkin.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+        &copy; Copyright 2017, Mikhail Itkin.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

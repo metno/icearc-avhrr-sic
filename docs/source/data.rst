@@ -58,9 +58,11 @@ We use the same land mask and sea ice concentration extent mask as in the OSI SA
 The projections used in this project are placed in the area definition file which is used by the :code:`pyresample` module. 
 
 .. code-block:: bash
+
    /lustre/storeB/users/mikhaili/icearc-avhrr-sic/codeshop/compute_sic/areas.cfg
 
-.. code-block::
+.. code::
+
    REGION: nsidc_stere_south_10k {
        NAME: NSIDC Polar Stereographic South
        PCS_ID: nsidc_stere_south_10k
