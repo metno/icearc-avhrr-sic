@@ -31,7 +31,8 @@ Each of the processing steps (resampling, calculation of coefficients, SIC compu
 On PPI at MET Norway they can be found at:
 
 .. code-block:: bash
-   $ls /lustre/storeB/project/metkl/ice-arc/data$
+
+   ls /lustre/storeB/project/metkl/ice-arc/data$
 
    resampled-avhrr-gac-gacv2-4k #---- resampled original data
    sic-avhrr-gacv2-4k #-------------- SIC retrievals
@@ -42,7 +43,8 @@ Ancillary data
 ==============
 
 .. code-block:: bash
-   $ ls codeshop/compute_sic/resources -1
+
+   ls codeshop/compute_sic/resources -1
 
    extent_mask_10k.npz
    extent_mask_4k.npz
