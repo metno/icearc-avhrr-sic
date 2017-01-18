@@ -11,17 +11,17 @@ Here is an example of the information provided for one swath:
 
 .. code-block:: bash
 
-S_NWC_CT_noaa19_99999_20151115T2114571Z_20151115T2257416Z.h5
-S_NWC_CMAprob_noaa19_99999_20151115T2114571Z_20151115T2257416Z.h5
-S_NWC_CMA_noaa19_99999_20151115T2114571Z_20151115T2257416Z.h5
-S_NWC_sunsatangles_noaa19_99999_20151115T2114571Z_20151115T2257416Z.h5
-S_NWC_avhrr_noaa19_99999_20151115T2114571Z_20151115T2257416Z.h5
+   S_NWC_CT_noaa19_99999_20151115T2114571Z_20151115T2257416Z.h5
+   S_NWC_CMAprob_noaa19_99999_20151115T2114571Z_20151115T2257416Z.h5
+   S_NWC_CMA_noaa19_99999_20151115T2114571Z_20151115T2257416Z.h5
+   S_NWC_sunsatangles_noaa19_99999_20151115T2114571Z_20151115T2257416Z.h5
+   S_NWC_avhrr_noaa19_99999_20151115T2114571Z_20151115T2257416Z.h5
 
- - The :code:`avhrr` file contains the actual measurements, six channels (5 measuring at a time).
- - The :code:`sunsatangles` file contain information about the sun elevation and the sensor zenith angle
- - The :code:`CMA` file contains cloud mask
- - The :code:`CMAprob` file contains probabilities of the surface pixel being covered by cloud
- - The :code:`CT` file contains the cloud types
+- The :code:`avhrr` file contains the actual measurements, six channels (5 measuring at a time).
+- The :code:`sunsatangles` file contain information about the sun elevation and the sensor zenith angle
+- The :code:`CMA` file contains cloud mask
+- The :code:`CMAprob` file contains probabilities of the surface pixel being covered by cloud
+- The :code:`CT` file contains the cloud types
 
 
 Output data
@@ -44,12 +44,12 @@ Ancillary data
 .. code-block:: bash
    $ ls codeshop/compute_sic/resources -1
 
-    extent_mask_10k.npz
-    extent_mask_4k.npz
-    land_mask_10k.npz
-    land_mask_4k.npz
-    land_mask.npz
-    LandOceanLakeMask_nh_ease2-250.nc
+   extent_mask_10k.npz
+   extent_mask_4k.npz
+   land_mask_10k.npz
+   land_mask_4k.npz
+   land_mask.npz
+   LandOceanLakeMask_nh_ease2-250.nc
 
 We use the same land mask and sea ice concentration extent mask as in the OSI SAF PMW sea ice concentration records. Details on the files can be found in the attributes of the :code:`LandOceanLakeMask_nh_ease2-250.nc` file.
 
