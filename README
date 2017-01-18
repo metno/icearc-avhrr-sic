@@ -13,3 +13,5 @@ and for selecting the methodologies
 To run behaviour test suit do:
     ansible-playbook -i ansible/hosts ansible/playbook.yml --limit='local' --tags='tests' --extra-vars='base_dir=/path/to/project'
 Where 'local' is an alias of your local machine, defined in the 'ansible/hosts' file
+
+Read documentation [here](docs/source/quickstart.rst)
